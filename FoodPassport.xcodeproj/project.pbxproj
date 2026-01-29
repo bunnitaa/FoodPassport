@@ -29,12 +29,55 @@
 		975A77B62F2AE188005F933B /* FoodPassportUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodPassportUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		975A779C2F2AE187005F933B /* FoodPassport */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = FoodPassport;
-			sourceTree = "<group>";
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		975A780A2F2AE793005F933B /* Exceptions for "FoodPassport" folder in "FoodPassport" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/FoodPassportApp.swift,
+				App/Persistence.swift,
+				Core/Models/Restaurant.swift,
+				Core/Network/NetworkManager.swift,
+				Core/Network/YelpService.swift,
+				Core/ViewModels/SearchViewModel.swift,
+				Features/Main/MainTabView.swift,
+				Features/Map/MapView.swift,
+				Features/Passport/PassportView.swift,
+				Features/Search/SearchView.swift,
+				Ressources/Assets.xcassets,
+			);
+			target = 975A77992F2AE187005F933B /* FoodPassport */;
 		};
+		975A780B2F2AE793005F933B /* Exceptions for "FoodPassport" folder in "FoodPassportUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/FoodPassportApp.swift,
+				App/Persistence.swift,
+				Core/Models/Restaurant.swift,
+				Core/Network/NetworkManager.swift,
+				Core/Network/YelpService.swift,
+				Core/ViewModels/SearchViewModel.swift,
+				Features/Main/MainTabView.swift,
+				Features/Map/MapView.swift,
+				Features/Passport/PassportView.swift,
+				Features/Search/SearchView.swift,
+				Ressources/Assets.xcassets,
+				Ressources/FoodPassport.xcdatamodeld,
+			);
+			target = 975A77B52F2AE188005F933B /* FoodPassportUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		975A782B2F2AE7AD005F933B /* Exceptions for "FoodPassport" folder in "Compile Sources" phase from "FoodPassport" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 975A77962F2AE187005F933B /* Sources */;
+			membershipExceptions = (
+				Ressources/FoodPassport.xcdatamodeld,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
 		975A77AF2F2AE188005F933B /* FoodPassportTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = FoodPassportTests;
@@ -43,6 +86,16 @@
 		975A77B92F2AE188005F933B /* FoodPassportUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = FoodPassportUITests;
+			sourceTree = "<group>";
+		};
+		975A77E02F2AE26F005F933B /* FoodPassport */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				975A780A2F2AE793005F933B /* Exceptions for "FoodPassport" folder in "FoodPassport" target */,
+				975A782B2F2AE7AD005F933B /* Exceptions for "FoodPassport" folder in "Compile Sources" phase from "FoodPassport" target */,
+				975A780B2F2AE793005F933B /* Exceptions for "FoodPassport" folder in "FoodPassportUITests" target */,
+			);
+			path = FoodPassport;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,7 +128,7 @@
 		975A77912F2AE187005F933B = {
 			isa = PBXGroup;
 			children = (
-				975A779C2F2AE187005F933B /* FoodPassport */,
+				975A77E02F2AE26F005F933B /* FoodPassport */,
 				975A77AF2F2AE188005F933B /* FoodPassportTests */,
 				975A77B92F2AE188005F933B /* FoodPassportUITests */,
 				975A779B2F2AE187005F933B /* Products */,
@@ -106,9 +159,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				975A779C2F2AE187005F933B /* FoodPassport */,
 			);
 			name = FoodPassport;
 			packageProductDependencies = (
@@ -155,6 +205,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				975A77B92F2AE188005F933B /* FoodPassportUITests */,
+				975A77E02F2AE26F005F933B /* FoodPassport */,
 			);
 			name = FoodPassportUITests;
 			packageProductDependencies = (
