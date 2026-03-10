@@ -8,15 +8,38 @@
 import SwiftUI
 import CoreData
 
+// define the available sorting options
+enum SortOption: String, CaseIterable {
+    case newest = "Most Recent"
+    case oldest = "Oldest"
+    case highestRated = "Highest Rated"
+    case lowestRated = "Lowest Rated"
+}
+
 struct PassportView: View {
-    // Handle deletions
     @Environment(\.managedObjectContext) private var viewContext
     
-    // Automatically fetches all stamps, sorted by newest first
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Stamp.date, ascending: false)],
         animation: .default)
     private var stamps: FetchedResults<Stamp>
+    
+    // state variable to track current selection
+    @State private var selectedSort: SortOption = .newest
+    
+    // computed property sorts the data based on the selection
+    var sortedStamps: [Stamp] {
+        switch selectedSort {
+        case .newest:
+            return stamps.sorted { ($0.date ?? Date.distantPast) > ($1.date ?? Date.distantPast) }
+        case .oldest:
+            return stamps.sorted { ($0.date ?? Date.distantPast) < ($1.date ?? Date.distantPast) }
+        case .highestRated:
+            return stamps.sorted { $0.rating > $1.rating }
+        case .lowestRated:
+            return stamps.sorted { $0.rating < $1.rating }
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -25,10 +48,10 @@ struct PassportView: View {
                     Text("No stamps yet. Go search and add your first meal!")
                         .foregroundColor(.secondary)
                 } else {
-                    ForEach(stamps) { stamp in
+                    // update loop to use the dynamically sorted array
+                    ForEach(sortedStamps) { stamp in
                         NavigationLink(destination: StampDetailView(stamp: stamp)) {
                             HStack(spacing: 12) {
-                                // Thumbnail of the saved photo
                                 if let photoData = stamp.photoData, let uiImage = UIImage(data: photoData) {
                                     Image(uiImage: uiImage)
                                         .resizable()
@@ -53,20 +76,32 @@ struct PassportView: View {
                             .padding(.vertical, 4)
                         }
                     }
-                    .onDelete(perform: deleteStamps) // Enables swipe-to-delete
+                    .onDelete(perform: deleteStamps)
                 }
             }
             .navigationTitle("My Passport")
+            // sort menu to the top right of the screen
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu {
+                        Picker("Sort By", selection: $selectedSort) {
+                            ForEach(SortOption.allCases, id: \.self) { option in
+                                Text(option.rawValue).tag(option)
+                            }
+                        }
+                    } label: {
+                        Label("Sort", systemImage: "arrow.up.arrow.down")
+                    }
+                }
+            }
         }
     }
     
-    // Function to handle the permanent deletion from CoreData
     private func deleteStamps(offsets: IndexSet) {
         withAnimation {
-            // Map the swiped index to the specific stamp and delete it
-            offsets.map { stamps[$0] }.forEach(viewContext.delete)
+            // map the deletion against the sorted array, not the raw fetch request
+            offsets.map { sortedStamps[$0] }.forEach(viewContext.delete)
             
-            // Save the database context to apply the deletion
             do {
                 try viewContext.save()
             } catch {
