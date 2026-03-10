@@ -42,7 +42,13 @@ struct StampDetailView: View {
                             .foregroundColor(.secondary)
                     }
                     
-                    Text("Rating: \(String(format: "%.1f", stamp.rating)) ⭐️")
+                    HStack(spacing: 4) {
+                        Text("Rating: \(String(format: "%.1f", stamp.rating))")
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                    }
+                    .font(.title3)
+                    .padding(.top, 4)
                         .font(.title3)
                         .padding(.top, 4)
                     

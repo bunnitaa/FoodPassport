@@ -8,13 +8,20 @@
 import Foundation
 
 class YelpService {
-    private let apiKey = "4-U1BsQA9ezHzHnjTWu-m23iQUPHissAsHXB1etgR1WEReplwewkBWj3b4o9so-JuWrz-Slq0_EWntDo7HH65F9pc74OdiHNIPVlGBbxLtk7gwzN_mbGK0dBvcCLaXYx"
+    // dynamically fetches the key from the environment
+    private var apiKey: String {
+        guard let key = Bundle.main.infoDictionary?["YELP_API_KEY"] as? String, !key.isEmpty else {
+            fatalError("YELP_API_KEY is missing from Info.plist or Secrets.xcconfig")
+        }
+        return key
+    }
     
     func searchRestaurants(term: String, location: String) async throws -> [Restaurant] {
-        let urlString = "https://api.yelp.com/v3/businesses/search?term=\(term)&location=\(location)&limit=20"
-        
-        guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
-            throw URLError(.badURL)
+            // categories filter to the end of this URL
+            let urlString = "https://api.yelp.com/v3/businesses/search?term=\(term)&location=\(location)&limit=20&categories=restaurants,food,grocery"
+            
+            guard let url = URL(string: urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") else {
+                throw URLError(.badURL)
         }
         
         var request = URLRequest(url: url)

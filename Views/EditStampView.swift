@@ -31,7 +31,11 @@ struct EditStampView: View {
         Form {
             Section(header: Text("Update Rating")) {
                 Slider(value: $rating, in: 1...5, step: 0.5)
-                Text("Rating: \(String(format: "%.1f", rating)) ⭐️")
+                HStack {
+                    Text("Rating: \(String(format: "%.1f", rating))")
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
+                }
             }
             
             Section(header: Text("Update Notes")) {

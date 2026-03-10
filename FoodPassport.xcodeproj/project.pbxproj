@@ -58,9 +58,22 @@
 		97ABA2C72F511013002EDDAD /* EditStampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStampView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		97A8C7C02F60642900B3609F /* Exceptions for "FoodPassport" folder in "FoodPassport" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 97ABA1E12F50F569002EDDAD /* FoodPassport */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		97ABA1E42F50F569002EDDAD /* FoodPassport */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97A8C7C02F60642900B3609F /* Exceptions for "FoodPassport" folder in "FoodPassport" target */,
+			);
 			path = FoodPassport;
 			sourceTree = "<group>";
 		};
@@ -340,6 +353,8 @@
 /* Begin XCBuildConfiguration section */
 		97ABA2062F50F56B002EDDAD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 97ABA1E42F50F569002EDDAD /* FoodPassport */;
+			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -403,6 +418,8 @@
 		};
 		97ABA2072F50F56B002EDDAD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 97ABA1E42F50F569002EDDAD /* FoodPassport */;
+			baseConfigurationReferenceRelativePath = Secrets.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -466,6 +483,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodPassport/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "FoodPassport needs your location to show where you are on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -498,6 +516,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodPassport/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "FoodPassport needs your location to show where you are on the map.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

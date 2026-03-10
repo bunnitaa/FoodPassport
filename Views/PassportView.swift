@@ -68,7 +68,13 @@ struct PassportView: View {
                                 VStack(alignment: .leading) {
                                     Text(stamp.restaurantName ?? "Unknown")
                                         .font(.headline)
-                                    Text("Rating: \(String(format: "%.1f", stamp.rating)) ⭐️")
+                                    HStack(spacing: 2) {
+                                        Text("Rating: \(String(format: "%.1f", stamp.rating))")
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                    }
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)
                                 }

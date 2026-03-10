@@ -31,7 +31,11 @@ struct AddStampView: View {
             
             Section(header: Text("Your Rating")) {
                 Slider(value: $rating, in: 1...5, step: 0.5)
-                Text("Rating: \(String(format: "%.1f", rating)) ⭐️")
+                HStack {
+                    Text("Rating: \(String(format: "%.1f", rating))")
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
+                }
             }
             
             Section(header: Text("Personal Notes (Optional)")) {

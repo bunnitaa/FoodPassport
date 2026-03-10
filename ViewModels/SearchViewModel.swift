@@ -16,18 +16,19 @@ class SearchViewModel: ObservableObject {
     
     private let yelpService = YelpService()
     
-    func performSearch(term: String, location: String = "Montreal") {
-        isLoading = true
-        errorMessage = nil
-        
-        Task {
-            do {
-                self.restaurants = try await yelpService.searchRestaurants(term: term, location: location)
-                self.isLoading = false
-            } catch {
-                self.errorMessage = "Failed to fetch data: \(error.localizedDescription)"
-                self.isLoading = false
-            }
+    func performSearch(term: String, location: String) {
+            isLoading = true
+            errorMessage = nil
+            
+            Task {
+                do {
+                    // pass both the term and the user's custom location string
+                    self.restaurants = try await yelpService.searchRestaurants(term: term, location: location)
+                    self.isLoading = false
+                } catch {
+                    self.errorMessage = "Failed to fetch data: \(error.localizedDescription)"
+                    self.isLoading = false
+                }
         }
     }
 }

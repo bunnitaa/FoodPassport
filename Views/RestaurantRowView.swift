@@ -40,7 +40,13 @@ struct RestaurantRowView: View {
                                         .lineLimit(1)
                 
                 if let rating = restaurant.rating {
-                    Text("Rating: \(String(format: "%.1f", rating)) ⭐️")
+                    HStack(spacing: 2) {
+                        Text("Rating: \(String(format: "%.1f", rating))")
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
