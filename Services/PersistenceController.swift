@@ -25,26 +25,30 @@ struct PersistenceController {
         }
     }
 
-    func saveStamp(restaurantId: String, name: String, address: String?, rating: Double, notes: String?, photoData: Data?, context: NSManagedObjectContext) {
-        let newStamp = Stamp(context: context)
-        newStamp.id = UUID()
-        newStamp.restaurantId = restaurantId
-        newStamp.restaurantName = name
-        newStamp.address = address
-        newStamp.rating = rating
-        newStamp.date = Date()
-        newStamp.photoData = photoData
-        newStamp.notes = notes
-        
-        do {
-            try context.save()
-            print("Successfully saved stamp for \(name)!")
-        } catch {
-            print("Failed to save stamp: \(error.localizedDescription)")
+    func saveStamp(restaurantId: String, name: String, address: String?, latitude: Double, longitude: Double, rating: Double, notes: String?, photoData: Data?, context: NSManagedObjectContext) {
+            let newStamp = Stamp(context: context)
+            newStamp.id = UUID()
+            newStamp.restaurantId = restaurantId
+            newStamp.restaurantName = name
+            newStamp.address = address
+            
+            // save the coordinates to the db
+            newStamp.latitude = latitude
+            newStamp.longitude = longitude
+            
+            newStamp.rating = rating
+            newStamp.date = Date()
+            newStamp.photoData = photoData
+            newStamp.notes = notes
+            
+            do {
+                try context.save()
+                print("Successfully saved stamp for \(name)!")
+            } catch {
+                print("Failed to save stamp: \(error.localizedDescription)")
+            }
         }
-    }
     
-    // The new update function sits completely outside and below saveStamp
     func updateStamp(stamp: Stamp, newRating: Double, newNotes: String?, newPhotoData: Data?, context: NSManagedObjectContext) {
         stamp.rating = newRating
         stamp.notes = newNotes

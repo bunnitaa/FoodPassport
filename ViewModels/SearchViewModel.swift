@@ -14,21 +14,21 @@ class SearchViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    private let yelpService = YelpService()
+    private let googleService = GooglePlacesService()
     
     func performSearch(term: String, location: String) {
-            isLoading = true
-            errorMessage = nil
-            
-            Task {
-                do {
-                    // pass both the term and the user's custom location string
-                    self.restaurants = try await yelpService.searchRestaurants(term: term, location: location)
-                    self.isLoading = false
-                } catch {
-                    self.errorMessage = "Failed to fetch data: \(error.localizedDescription)"
-                    self.isLoading = false
-                }
+        isLoading = true
+        errorMessage = nil
+        
+        Task {
+            do {
+                self.restaurants = try await googleService.searchRestaurants(term: term, location: location)
+                self.isLoading = false
+            } catch {
+                print("API Failed: \(error.localizedDescription). Loading offline mock data.")
+                self.restaurants = Restaurant.mockData
+                self.isLoading = false
+            }
         }
     }
 }

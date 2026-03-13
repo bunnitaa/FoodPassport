@@ -65,17 +65,19 @@ struct AddStampView: View {
             }
             
             Button("Save Stamp") {
-                PersistenceController.shared.saveStamp(
-                    restaurantId: restaurant.id,
-                    name: restaurant.name,
-                    address: restaurant.displayAddress,
-                    rating: rating,
-                    notes: notes.isEmpty ? nil : notes, // Pass nil if they left it blank
-                    photoData: selectedPhotoData,
-                    context: viewContext
-                )
-                dismiss() // Close the form
-            }
+                            PersistenceController.shared.saveStamp(
+                                restaurantId: restaurant.id,
+                                name: restaurant.name,
+                                address: restaurant.displayAddress,
+                                latitude: restaurant.latitude,
+                                longitude: restaurant.longitude,
+                                rating: rating,
+                                notes: notes.isEmpty ? nil : notes,
+                                photoData: selectedPhotoData,
+                                context: viewContext
+                            )
+                            dismiss()
+                        }
             .frame(maxWidth: .infinity, alignment: .center)
             .buttonStyle(.borderedProminent)
             .padding(.vertical)
