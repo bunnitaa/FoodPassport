@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @StateObject private var searchViewModel = SearchViewModel()
+    
     var body: some View {
         TabView {
-            SearchView()
+            SearchView(viewModel: searchViewModel)
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
             
-            // Load the real PassportView
+            MapView(viewModel: searchViewModel)
+                .tabItem {
+                    Label("Passport Map", systemImage: "map")
+                }
+                
             PassportView()
                 .tabItem {
-                    Label("Passport", systemImage: "book.closed.fill")
-                }
-            
-            MapView()
-                .tabItem {
-                    Label("Map", systemImage: "map.fill")
+                    Label("My Stamps", systemImage: "book.closed")
                 }
         }
+        .tint(.orange)
     }
 }

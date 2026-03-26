@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    @StateObject private var viewModel = SearchViewModel()
+    @ObservedObject var viewModel: SearchViewModel
     @State private var searchText = ""
     @State private var locationText = "Montreal, QC" // default search area
     
