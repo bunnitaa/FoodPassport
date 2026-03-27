@@ -7,6 +7,8 @@
 
 import SwiftUI
 import PhotosUI
+import WidgetKit
+import CoreData
 
 struct AddStampView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -76,6 +78,16 @@ struct AddStampView: View {
                                 photoData: selectedPhotoData,
                                 context: viewContext
                             )
+                            
+                            // send name across the App Group bridge to the widget
+                            if let sharedDefaults = UserDefaults(suiteName: "group.FoodPassport") {
+                                    sharedDefaults.set(restaurant.name, forKey: "lastMealName")
+                                    sharedDefaults.set(restaurant.displayAddress, forKey: "lastMealAddress")
+                                    sharedDefaults.set(rating, forKey: "lastMealRating")
+                                    sharedDefaults.set(notes, forKey: "lastMealNotes")
+                                // force widget to refresh its timeline immediately
+                                WidgetCenter.shared.reloadAllTimelines()
+                            }                            
                             dismiss()
                         }
             .frame(maxWidth: .infinity, alignment: .center)

@@ -7,22 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		97A8C7C62F63AEEE00B3609F /* GooglePlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A8C7C52F63AEEE00B3609F /* GooglePlacesService.swift */; };
-		97ABA2162F50F67A002EDDAD /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2152F50F67A002EDDAD /* Restaurant.swift */; };
-		97ABA2B02F50F921002EDDAD /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2AF2F50F921002EDDAD /* SearchViewModel.swift */; };
-		97ABA2B22F50F93A002EDDAD /* RestaurantRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2B12F50F93A002EDDAD /* RestaurantRowView.swift */; };
-		97ABA2B42F50F954002EDDAD /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2B32F50F954002EDDAD /* SearchView.swift */; };
-		97ABA2B62F50F9B1002EDDAD /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2B52F50F9B1002EDDAD /* MainTabView.swift */; };
-		97ABA2B82F50FB7B002EDDAD /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2B72F50FB7B002EDDAD /* PersistenceController.swift */; };
-		97ABA2BC2F50FBCA002EDDAD /* AddStampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2BB2F50FBCA002EDDAD /* AddStampView.swift */; };
-		97ABA2BE2F50FC04002EDDAD /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2BD2F50FC04002EDDAD /* LocationManager.swift */; };
-		97ABA2C02F50FC2B002EDDAD /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2BF2F50FC2B002EDDAD /* MapView.swift */; };
-		97ABA2C22F51046F002EDDAD /* StampDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2C12F51046F002EDDAD /* StampDetailView.swift */; };
-		97ABA2C42F510495002EDDAD /* PassportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2C32F510495002EDDAD /* PassportView.swift */; };
-		97ABA2C82F511013002EDDAD /* EditStampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ABA2C72F511013002EDDAD /* EditStampView.swift */; };
+		97A8C80E2F7713C000B3609F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A8C7EF2F77139600B3609F /* WidgetKit.framework */; };
+		97A8C80F2F7713C000B3609F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A8C7F12F77139600B3609F /* SwiftUI.framework */; };
+		97A8C81E2F7713C100B3609F /* FoodPassportWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 97A8C80D2F7713C000B3609F /* FoodPassportWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		97A8C81C2F7713C100B3609F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97ABA1DA2F50F569002EDDAD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97A8C80C2F7713C000B3609F;
+			remoteInfo = FoodPassportWidgetExtension;
+		};
 		97ABA1F52F50F56B002EDDAD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97ABA1DA2F50F569002EDDAD /* Project object */;
@@ -39,23 +36,28 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		97A8C8042F77139800B3609F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				97A8C81E2F7713C100B3609F /* FoodPassportWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		97A8C7C52F63AEEE00B3609F /* GooglePlacesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesService.swift; sourceTree = "<group>"; };
+		97A8C7EF2F77139600B3609F /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		97A8C7F12F77139600B3609F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		97A8C80D2F7713C000B3609F /* FoodPassportWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FoodPassportWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A8C8242F77174000B3609F /* FoodPassportWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FoodPassportWidgetExtension.entitlements; sourceTree = "<group>"; };
 		97ABA1E22F50F569002EDDAD /* FoodPassport.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodPassport.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97ABA1F42F50F56B002EDDAD /* FoodPassportTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodPassportTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97ABA1FE2F50F56B002EDDAD /* FoodPassportUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodPassportUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		97ABA2152F50F67A002EDDAD /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
-		97ABA2AF2F50F921002EDDAD /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		97ABA2B12F50F93A002EDDAD /* RestaurantRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantRowView.swift; sourceTree = "<group>"; };
-		97ABA2B32F50F954002EDDAD /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		97ABA2B52F50F9B1002EDDAD /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
-		97ABA2B72F50FB7B002EDDAD /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		97ABA2BB2F50FBCA002EDDAD /* AddStampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStampView.swift; sourceTree = "<group>"; };
-		97ABA2BD2F50FC04002EDDAD /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
-		97ABA2BF2F50FC2B002EDDAD /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
-		97ABA2C12F51046F002EDDAD /* StampDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampDetailView.swift; sourceTree = "<group>"; };
-		97ABA2C32F510495002EDDAD /* PassportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassportView.swift; sourceTree = "<group>"; };
-		97ABA2C72F511013002EDDAD /* EditStampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStampView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -66,9 +68,24 @@
 			);
 			target = 97ABA1E12F50F569002EDDAD /* FoodPassport */;
 		};
+		97A8C8222F7713C100B3609F /* Exceptions for "FoodPassportWidget" folder in "FoodPassportWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 97A8C80C2F7713C000B3609F /* FoodPassportWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		97A8C8102F7713C000B3609F /* FoodPassportWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97A8C8222F7713C100B3609F /* Exceptions for "FoodPassportWidget" folder in "FoodPassportWidgetExtension" target */,
+			);
+			path = FoodPassportWidget;
+			sourceTree = "<group>";
+		};
 		97ABA1E42F50F569002EDDAD /* FoodPassport */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -80,6 +97,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		97A8C80A2F7713C000B3609F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97A8C80F2F7713C000B3609F /* SwiftUI.framework in Frameworks */,
+				97A8C80E2F7713C000B3609F /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97ABA1DF2F50F569002EDDAD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -104,14 +130,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		97A8C7EE2F77139600B3609F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97A8C7EF2F77139600B3609F /* WidgetKit.framework */,
+				97A8C7F12F77139600B3609F /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		97ABA1D92F50F569002EDDAD = {
 			isa = PBXGroup;
 			children = (
-				97ABA2142F50F65F002EDDAD /* Views */,
-				97ABA2132F50F654002EDDAD /* ViewModels */,
-				97ABA2122F50F64A002EDDAD /* Services */,
-				97ABA2112F50F642002EDDAD /* Models */,
+				97A8C8242F77174000B3609F /* FoodPassportWidgetExtension.entitlements */,
 				97ABA1E42F50F569002EDDAD /* FoodPassport */,
+				97A8C8102F7713C000B3609F /* FoodPassportWidget */,
+				97A8C7EE2F77139600B3609F /* Frameworks */,
 				97ABA1E32F50F569002EDDAD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,54 +156,36 @@
 				97ABA1E22F50F569002EDDAD /* FoodPassport.app */,
 				97ABA1F42F50F56B002EDDAD /* FoodPassportTests.xctest */,
 				97ABA1FE2F50F56B002EDDAD /* FoodPassportUITests.xctest */,
+				97A8C80D2F7713C000B3609F /* FoodPassportWidgetExtension.appex */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		97ABA2112F50F642002EDDAD /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				97ABA2152F50F67A002EDDAD /* Restaurant.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		97ABA2122F50F64A002EDDAD /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				97ABA2B72F50FB7B002EDDAD /* PersistenceController.swift */,
-				97A8C7C52F63AEEE00B3609F /* GooglePlacesService.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		97ABA2132F50F654002EDDAD /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				97ABA2AF2F50F921002EDDAD /* SearchViewModel.swift */,
-				97ABA2BD2F50FC04002EDDAD /* LocationManager.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		97ABA2142F50F65F002EDDAD /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				97ABA2B12F50F93A002EDDAD /* RestaurantRowView.swift */,
-				97ABA2B32F50F954002EDDAD /* SearchView.swift */,
-				97ABA2B52F50F9B1002EDDAD /* MainTabView.swift */,
-				97ABA2BB2F50FBCA002EDDAD /* AddStampView.swift */,
-				97ABA2BF2F50FC2B002EDDAD /* MapView.swift */,
-				97ABA2C12F51046F002EDDAD /* StampDetailView.swift */,
-				97ABA2C32F510495002EDDAD /* PassportView.swift */,
-				97ABA2C72F511013002EDDAD /* EditStampView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		97A8C80C2F7713C000B3609F /* FoodPassportWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97A8C81F2F7713C100B3609F /* Build configuration list for PBXNativeTarget "FoodPassportWidgetExtension" */;
+			buildPhases = (
+				97A8C8092F7713C000B3609F /* Sources */,
+				97A8C80A2F7713C000B3609F /* Frameworks */,
+				97A8C80B2F7713C000B3609F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				97A8C8102F7713C000B3609F /* FoodPassportWidget */,
+			);
+			name = FoodPassportWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = FoodPassportWidgetExtension;
+			productReference = 97A8C80D2F7713C000B3609F /* FoodPassportWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		97ABA1E12F50F569002EDDAD /* FoodPassport */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97ABA2082F50F56B002EDDAD /* Build configuration list for PBXNativeTarget "FoodPassport" */;
@@ -177,10 +193,12 @@
 				97ABA1DE2F50F569002EDDAD /* Sources */,
 				97ABA1DF2F50F569002EDDAD /* Frameworks */,
 				97ABA1E02F50F569002EDDAD /* Resources */,
+				97A8C8042F77139800B3609F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				97A8C81D2F7713C100B3609F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				97ABA1E42F50F569002EDDAD /* FoodPassport */,
@@ -242,6 +260,9 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					97A8C80C2F7713C000B3609F = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 					97ABA1E12F50F569002EDDAD = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -272,11 +293,19 @@
 				97ABA1E12F50F569002EDDAD /* FoodPassport */,
 				97ABA1F32F50F56B002EDDAD /* FoodPassportTests */,
 				97ABA1FD2F50F56B002EDDAD /* FoodPassportUITests */,
+				97A8C80C2F7713C000B3609F /* FoodPassportWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		97A8C80B2F7713C000B3609F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97ABA1E02F50F569002EDDAD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -301,23 +330,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		97A8C8092F7713C000B3609F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97ABA1DE2F50F569002EDDAD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97ABA2C82F511013002EDDAD /* EditStampView.swift in Sources */,
-				97ABA2162F50F67A002EDDAD /* Restaurant.swift in Sources */,
-				97ABA2B42F50F954002EDDAD /* SearchView.swift in Sources */,
-				97ABA2C42F510495002EDDAD /* PassportView.swift in Sources */,
-				97ABA2B02F50F921002EDDAD /* SearchViewModel.swift in Sources */,
-				97ABA2B82F50FB7B002EDDAD /* PersistenceController.swift in Sources */,
-				97ABA2C02F50FC2B002EDDAD /* MapView.swift in Sources */,
-				97ABA2C22F51046F002EDDAD /* StampDetailView.swift in Sources */,
-				97A8C7C62F63AEEE00B3609F /* GooglePlacesService.swift in Sources */,
-				97ABA2B22F50F93A002EDDAD /* RestaurantRowView.swift in Sources */,
-				97ABA2BC2F50FBCA002EDDAD /* AddStampView.swift in Sources */,
-				97ABA2B62F50F9B1002EDDAD /* MainTabView.swift in Sources */,
-				97ABA2BE2F50FC04002EDDAD /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,6 +361,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		97A8C81D2F7713C100B3609F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97A8C80C2F7713C000B3609F /* FoodPassportWidgetExtension */;
+			targetProxy = 97A8C81C2F7713C100B3609F /* PBXContainerItemProxy */;
+		};
 		97ABA1F62F50F56B002EDDAD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 97ABA1E12F50F569002EDDAD /* FoodPassport */;
@@ -351,6 +379,68 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		97A8C8202F7713C100B3609F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = FoodPassportWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A476976PU9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodPassportWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FoodPassportWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bunnita.FoodPassport.FoodPassportWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97A8C8212F7713C100B3609F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = FoodPassportWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A476976PU9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FoodPassportWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FoodPassportWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bunnita.FoodPassport.FoodPassportWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		97ABA2062F50F56B002EDDAD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = 97ABA1E42F50F569002EDDAD /* FoodPassport */;
@@ -479,8 +569,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FoodPassport/FoodPassport.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A476976PU9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FoodPassport/Info.plist;
@@ -512,8 +604,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FoodPassport/FoodPassport.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A476976PU9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FoodPassport/Info.plist;
@@ -623,6 +717,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		97A8C81F2F7713C100B3609F /* Build configuration list for PBXNativeTarget "FoodPassportWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97A8C8202F7713C100B3609F /* Debug */,
+				97A8C8212F7713C100B3609F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		97ABA1DD2F50F569002EDDAD /* Build configuration list for PBXProject "FoodPassport" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
