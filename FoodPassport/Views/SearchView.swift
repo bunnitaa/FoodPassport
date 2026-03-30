@@ -9,18 +9,15 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var viewModel: SearchViewModel
-    @State private var searchText = ""
-    @State private var locationText = "Montreal, QC" // default search area
     
     var body: some View {
         NavigationStack {
             List {
-                // adress/city input field
                 Section(header: Text("Search Area")) {
                     HStack {
                         Image(systemName: "mappin.and.ellipse")
                             .foregroundColor(.blue)
-                        TextField("Enter city, neighborhood, or exact address", text: $locationText)
+                        TextField("Enter city, neighborhood, or exact address", text: $viewModel.searchLocation)
                             .submitLabel(.search)
                             .onSubmit {
                                 triggerSearch()
@@ -28,14 +25,13 @@ struct SearchView: View {
                     }
                 }
                 
-                // results
                 Section(header: Text("Results")) {
                     if viewModel.isLoading {
                         ProgressView("Searching...")
                             .frame(maxWidth: .infinity, alignment: .center)
                     } else if let error = viewModel.errorMessage {
                         Text(error).foregroundColor(.red)
-                    } else if viewModel.restaurants.isEmpty && !searchText.isEmpty {
+                    } else if viewModel.restaurants.isEmpty && !viewModel.searchText.isEmpty {
                         Text("No food locations found.")
                             .foregroundColor(.secondary)
                     } else {
@@ -48,17 +44,20 @@ struct SearchView: View {
                 }
             }
             .navigationTitle("Search")
-            // restaurant name input field
-            .searchable(text: $searchText, prompt: "Find tacos, burgers, etc.")
+            // point to shared vm memory
+            .searchable(text: $viewModel.searchText, prompt: "Find tacos, burgers, etc.")
             .onSubmit(of: .search) {
                 triggerSearch()
             }
         }
     }
     
-    // helper function to ensure both inputs trigger the exact same API call
     private func triggerSearch() {
-        guard !searchText.isEmpty, !locationText.isEmpty else { return }
-        viewModel.performSearch(term: searchText, location: locationText)
+        guard !viewModel.searchLocation.isEmpty else { return }
+        
+        // if user just types a city but no food type, default to "restaurants"
+        let term = viewModel.searchText.isEmpty ? "restaurants" : viewModel.searchText
+        
+        viewModel.performSearch(term: term, location: viewModel.searchLocation)
     }
 }

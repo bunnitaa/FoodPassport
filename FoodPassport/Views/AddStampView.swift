@@ -16,10 +16,26 @@ struct AddStampView: View {
     
     let restaurant: Restaurant
     
+    // standard rating
     @State private var rating: Double = 3.0
+    
+    // detail ratings options
+    @State private var useDetailedRatings: Bool = false
+    @State private var foodRating: Double = 3.0
+    @State private var serviceRating: Double = 3.0
+    @State private var valueRating: Double = 3.0
+    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedPhotoData: Data? = nil
     @State private var notes: String = ""
+    
+    // calculate average if detail rating on
+    private var calculatedOverallRating: Double {
+        if useDetailedRatings {
+            return (foodRating + serviceRating + valueRating) / 3.0
+        }
+        return rating
+    }
     
     var body: some View {
         Form {
@@ -27,16 +43,44 @@ struct AddStampView: View {
                 Text(restaurant.name)
                     .font(.headline)
                 Text(restaurant.displayAddress)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
             
             Section(header: Text("Your Rating")) {
-                Slider(value: $rating, in: 1...5, step: 0.5)
-                HStack {
-                    Text("Rating: \(String(format: "%.1f", rating))")
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
+                Toggle("Use Detailed Rating", isOn: $useDetailedRatings)
+                    .tint(.orange)
+                
+                if useDetailedRatings {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Food: \(String(format: "%.1f", foodRating))")
+                        Slider(value: $foodRating, in: 1...5, step: 0.5)
+                        
+                        Text("Service: \(String(format: "%.1f", serviceRating))")
+                        Slider(value: $serviceRating, in: 1...5, step: 0.5)
+                        
+                        Text("Value: \(String(format: "%.1f", valueRating))")
+                        Slider(value: $valueRating, in: 1...5, step: 0.5)
+                        
+                        Divider()
+                        
+                        HStack {
+                            Text("Overall Average:")
+                                .bold()
+                            Spacer()
+                            Text(String(format: "%.1f", calculatedOverallRating))
+                                .bold()
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.yellow)
+                        }
+                    }
+                } else {
+                    Slider(value: $rating, in: 1...5, step: 0.5)
+                    HStack {
+                        Text("Rating: \(String(format: "%.1f", rating))")
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                    }
                 }
             }
             
@@ -67,31 +111,33 @@ struct AddStampView: View {
             }
             
             Button("Save Stamp") {
-                            PersistenceController.shared.saveStamp(
-                                restaurantId: restaurant.id,
-                                name: restaurant.name,
-                                address: restaurant.displayAddress,
-                                latitude: restaurant.latitude,
-                                longitude: restaurant.longitude,
-                                rating: rating,
-                                notes: notes.isEmpty ? nil : notes,
-                                photoData: selectedPhotoData,
-                                context: viewContext
-                            )
-                            
-                            // send name across the App Group bridge to the widget
-                            if let sharedDefaults = UserDefaults(suiteName: "group.FoodPassport") {
-                                    sharedDefaults.set(restaurant.name, forKey: "lastMealName")
-                                    sharedDefaults.set(restaurant.displayAddress, forKey: "lastMealAddress")
-                                    sharedDefaults.set(rating, forKey: "lastMealRating")
-                                    sharedDefaults.set(notes, forKey: "lastMealNotes")
-                                // force widget to refresh its timeline immediately
-                                WidgetCenter.shared.reloadAllTimelines()
-                            }                            
-                            dismiss()
-                        }
+                // dynamically save calculated rating
+                let finalRatingToSave = calculatedOverallRating
+                
+                PersistenceController.shared.saveStamp(
+                    restaurantId: restaurant.id,
+                    name: restaurant.name,
+                    address: restaurant.displayAddress,
+                    latitude: restaurant.latitude,
+                    longitude: restaurant.longitude,
+                    rating: finalRatingToSave,
+                    notes: notes.isEmpty ? nil : notes,
+                    photoData: selectedPhotoData,
+                    context: viewContext
+                )
+                
+                if let sharedDefaults = UserDefaults(suiteName: "group.FoodPassport") {
+                    sharedDefaults.set(restaurant.name, forKey: "lastMealName")
+                    sharedDefaults.set(restaurant.displayAddress, forKey: "lastMealAddress")
+                    sharedDefaults.set(finalRatingToSave, forKey: "lastMealRating")
+                    sharedDefaults.set(notes, forKey: "lastMealNotes")
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
+                dismiss()
+            }
             .frame(maxWidth: .infinity, alignment: .center)
             .buttonStyle(.borderedProminent)
+            .tint(.orange)
             .padding(.vertical)
         }
         .navigationTitle("Add to Passport")

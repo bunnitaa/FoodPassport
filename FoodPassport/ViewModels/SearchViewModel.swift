@@ -13,22 +13,24 @@ class SearchViewModel: ObservableObject {
     @Published var restaurants: [Restaurant] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published var searchLocation: String = "Montreal, QC"
+    @Published var searchText: String = ""
     
     private let googleService = GooglePlacesService()
     
     func performSearch(term: String, location: String) {
-        isLoading = true
-        errorMessage = nil
-        
-        Task {
-            do {
-                self.restaurants = try await googleService.searchRestaurants(term: term, location: location)
-                self.isLoading = false
-            } catch {
-                print("API Failed: \(error.localizedDescription). Loading offline mock data.")
-                self.restaurants = Restaurant.mockData
-                self.isLoading = false
+            isLoading = true
+            errorMessage = nil
+            
+            Task {
+                do {
+                    self.restaurants = try await googleService.searchRestaurants(term: term, location: location)
+                    self.isLoading = false
+                } catch {
+                    print("API Failed: \(error.localizedDescription). Loading offline mock data.")
+                    self.restaurants = Restaurant.mockData
+                    self.isLoading = false
+                }
             }
         }
-    }
 }

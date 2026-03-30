@@ -12,7 +12,6 @@ import CoreData
 struct MapView: View {
     @ObservedObject var viewModel: SearchViewModel
     
-    // fetch saved stamps from CoreData
     @FetchRequest(
         entity: Stamp.entity(),
         sortDescriptors: []
@@ -21,6 +20,7 @@ struct MapView: View {
     @State private var selectedRestaurant: Restaurant?
     @State private var restaurantToSave: Restaurant?
     
+    // controls the city search bar
     @State private var position: MapCameraPosition = .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 45.5017, longitude: -73.5673),
@@ -28,11 +28,9 @@ struct MapView: View {
         )
     )
     
-    // merge CoreData and Search Results to show all pins
     private var allDisplayableRestaurants: [Restaurant] {
         var uniqueRestaurants: [String: Restaurant] = [:]
         
-        // add saved stamps to map
         for stamp in savedStamps {
             if let id = stamp.restaurantId, let name = stamp.restaurantName {
                 uniqueRestaurants[id] = Restaurant(
@@ -47,7 +45,6 @@ struct MapView: View {
             }
         }
         
-        // search results
         for restaurant in viewModel.restaurants {
             uniqueRestaurants[restaurant.id] = restaurant
         }
@@ -57,7 +54,6 @@ struct MapView: View {
     
     var body: some View {
         Map(position: $position) {
-            // loop through the combined list
             ForEach(allDisplayableRestaurants) { restaurant in
                 Annotation(restaurant.name, coordinate: CLLocationCoordinate2D(
                     latitude: restaurant.latitude,
@@ -103,10 +99,60 @@ struct MapView: View {
             MapCompass()
             MapPitchToggle()
         }
+        // city search bar
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.secondary)
+                
+                TextField("Search a city (e.g. Laval)...", text: $viewModel.searchLocation)
+                    .submitLabel(.search)
+                    .onSubmit {
+                        // move the camera
+                        searchForLocation(query: viewModel.searchLocation)
+                        
+                        // fetch the google places data for new city
+                        let term = viewModel.searchText.isEmpty ? "restaurants" : viewModel.searchText
+                        viewModel.performSearch(term: term, location: viewModel.searchLocation)
+                    }
+                
+                if !viewModel.searchLocation.isEmpty {
+                    Button(action: { viewModel.searchLocation = "" }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .padding(10)
+            .background(Color(UIColor.systemBackground).opacity(0.95))
+            .cornerRadius(15)
+            .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 2)
+            .padding(.horizontal)
+            .padding(.top, 10)
+        }
         .onAppear { updateBounds() }
-        .onChange(of: viewModel.restaurants.count) { _ in updateBounds() }
+        .onChange(of: viewModel.restaurants.count) { updateBounds() }
         .sheet(item: $restaurantToSave) { restaurant in
             AddStampView(restaurant: restaurant)
+        }
+    }
+    
+    private func searchForLocation(query: String) {
+        guard !query.isEmpty else { return }
+        
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
+        
+        let search = MKLocalSearch(request: request)
+        search.start { response, error in
+            guard let coordinate = response?.mapItems.first?.location.coordinate else { return }
+            
+            withAnimation(.easeInOut(duration: 1.0)) {
+                position = .region(MKCoordinateRegion(
+                    center: coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)
+                ))
+            }
         }
     }
     
@@ -114,7 +160,6 @@ struct MapView: View {
         savedStamps.contains { $0.restaurantId == id }
     }
     
-    // zoom search results when search happens
     private func updateBounds() {
         guard !viewModel.restaurants.isEmpty else { return }
         let coordinates = viewModel.restaurants.map {
