@@ -27,18 +27,35 @@ struct PassportView: View {
     
     @State private var selectedSort: SortOption = .newest
     
-    var sortedStamps: [Stamp] {
-        switch selectedSort {
-        case .newest:
-            return stamps.sorted { ($0.date ?? Date.distantPast) > ($1.date ?? Date.distantPast) }
-        case .oldest:
-            return stamps.sorted { ($0.date ?? Date.distantPast) < ($1.date ?? Date.distantPast) }
-        case .highestRated:
-            return stamps.sorted { $0.rating > $1.rating }
-        case .lowestRated:
-            return stamps.sorted { $0.rating < $1.rating }
+    // filter states
+    @State private var showingFilters = false
+    @State private var filterCriteria = FilterCriteria()
+    
+    // apply filters first, then sort the results
+    var filteredAndSortedStamps: [Stamp] {
+            let filtered = stamps.filter { stamp in
+                // round both numbers to 1 decimal place so the math matches the UI
+                let displayRating = (stamp.rating * 10).rounded() / 10.0
+                let filterRating = (filterCriteria.minimumRating * 10).rounded() / 10.0
+                
+                let meetsRating = displayRating >= filterRating
+                let meetsPhoto = filterCriteria.requiresPhoto ? (stamp.photoData != nil) : true
+                let meetsDetailed = filterCriteria.requiresDetailedRating ? stamp.hasDetailedRating : true
+                
+                return meetsRating && meetsPhoto && meetsDetailed
+            }
+            
+            switch selectedSort {
+            case .newest:
+                return filtered.sorted { ($0.date ?? Date.distantPast) > ($1.date ?? Date.distantPast) }
+            case .oldest:
+                return filtered.sorted { ($0.date ?? Date.distantPast) < ($1.date ?? Date.distantPast) }
+            case .highestRated:
+                return filtered.sorted { $0.rating > $1.rating }
+            case .lowestRated:
+                return filtered.sorted { $0.rating < $1.rating }
+            }
         }
-    }
     
     var body: some View {
         NavigationStack {
@@ -46,9 +63,14 @@ struct PassportView: View {
                 if stamps.isEmpty {
                     Text("No stamps yet. Go search and add your first meal!")
                         .foregroundColor(.secondary)
+                } else if filteredAndSortedStamps.isEmpty {
+                    // feedback if filters are too strict
+                    Text("No stamps match your current filters.")
+                        .foregroundColor(.secondary)
+                        .padding(.vertical)
                 } else {
-                    // We pass the stamp to the new StampRow subview
-                    ForEach(sortedStamps) { stamp in
+                    // use the filtered array
+                    ForEach(filteredAndSortedStamps) { stamp in
                         NavigationLink(destination: StampDetailView(stamp: stamp)) {
                             StampRow(stamp: stamp)
                         }
@@ -58,6 +80,15 @@ struct PassportView: View {
             }
             .navigationTitle("My Passport")
             .toolbar {
+                // filter button on the leading edge
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { showingFilters = true }) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            // fill the icon so user knows filters are currently active
+                            .symbolVariant(filterCriteria.minimumRating > 1.0 || filterCriteria.requiresPhoto || filterCriteria.requiresDetailedRating ? .fill : .none)
+                    }
+                }
+                
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
                         Picker("Sort By", selection: $selectedSort) {
@@ -70,12 +101,17 @@ struct PassportView: View {
                     }
                 }
             }
+            // filter sheet
+            .sheet(isPresented: $showingFilters) {
+                PassportFilterView(criteria: $filterCriteria)
+            }
         }
     }
     
     private func deleteStamps(offsets: IndexSet) {
         withAnimation {
-            offsets.map { sortedStamps[$0] }.forEach(viewContext.delete)
+            // delte from the filtered array to avoid index out-of-bounds crashes
+            offsets.map { filteredAndSortedStamps[$0] }.forEach(viewContext.delete)
             try? viewContext.save()
         }
     }

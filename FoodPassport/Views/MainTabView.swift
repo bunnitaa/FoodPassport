@@ -4,6 +4,7 @@
 //
 //  Created by Bunnita on 2026-02-26.
 //
+
 import SwiftUI
 
 struct MainTabView: View {
@@ -11,6 +12,9 @@ struct MainTabView: View {
     
     // read dark mode setting from device memory
     @AppStorage("isDarkMode") private var isDarkMode = false
+    
+    // read tutorial status from device memory
+    @AppStorage("hasSeenTutorial") private var hasSeenTutorial = false
     
     var body: some View {
         TabView {
@@ -31,6 +35,7 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Passport", systemImage: "book.closed")
                 }
+            
             // profile Tab
             ProfileStatsView()
                 .tabItem {
@@ -45,5 +50,12 @@ struct MainTabView: View {
         }
         .tint(.orange)
         .preferredColorScheme(isDarkMode ? .dark : .light)
+        // present the tutorial if they haven't seen it
+        .fullScreenCover(isPresented: .init(
+            get: { !hasSeenTutorial },
+            set: { _ in } // dismissal is handled by the "Get Started" button inside TutorialView
+        )) {
+            TutorialView()
+        }
     }
 }

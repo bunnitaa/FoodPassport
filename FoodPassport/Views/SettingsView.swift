@@ -17,6 +17,7 @@ struct SettingsView: View {
     @AppStorage("isLoggedIn") private var isLoggedIn = true
     
     @State private var showingClearAlert = false
+    @AppStorage("hasSeenTutorial") private var hasSeenTutorial = true
     
     var body: some View {
         NavigationStack {
@@ -35,6 +36,16 @@ struct SettingsView: View {
                             Spacer()
                             Image(systemName: "trash")
                         }
+                    }
+                }
+                
+                // testing section to reset the tutorial
+                Section(header: Text("Developer / Testing")) {
+                    Button(action: {
+                        hasSeenTutorial = false
+                    }) {
+                        Text("Reset App Tutorial")
+                            .foregroundColor(.blue)
                     }
                 }
                 
