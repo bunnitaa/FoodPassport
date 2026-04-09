@@ -1,16 +1,10 @@
-//
-//  StampDetailView.swift
-//  FoodPassport
-//
-//  Created by Bunnita on 2026-02-26.
-//
-
 import SwiftUI
 
 struct StampDetailView: View {
     // Allows the view to instantly update when the stamp is edited
     @ObservedObject var stamp: Stamp
     @State private var showingEditSheet = false
+    @State private var showingFullScreenPhoto = false
     
     var body: some View {
         ScrollView {
@@ -19,9 +13,11 @@ struct StampDetailView: View {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(12)
-                        .padding(.horizontal)
+                        .frame(maxHeight: 250)
+                        .cornerRadius(8)
+                        .onTapGesture {
+                            showingFullScreenPhoto = true
+                        }
                 } else {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
@@ -49,8 +45,6 @@ struct StampDetailView: View {
                     }
                     .font(.title3)
                     .padding(.top, 4)
-                        .font(.title3)
-                        .padding(.top, 4)
                     
                     if let notes = stamp.notes, !notes.isEmpty {
                         VStack(alignment: .leading, spacing: 4) {
@@ -96,6 +90,12 @@ struct StampDetailView: View {
         .sheet(isPresented: $showingEditSheet) {
             NavigationStack {
                 EditStampView(stamp: stamp)
+            }
+        }
+        // opens the full-screen photo view
+        .fullScreenCover(isPresented: $showingFullScreenPhoto) {
+            if let photoData = stamp.photoData, let uiImage = UIImage(data: photoData) {
+                FullScreenPhotoView(image: uiImage)
             }
         }
     }

@@ -7,12 +7,14 @@
 
 import SwiftUI
 import CoreData
+import FirebaseAuth
 
 struct SettingsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     
     // automatically saves user's theme preference to the device
     @AppStorage("isDarkMode") private var isDarkMode = false
+    @AppStorage("isLoggedIn") private var isLoggedIn = true
     
     @State private var showingClearAlert = false
     
@@ -46,6 +48,22 @@ struct SettingsView: View {
                         Text("Developer")
                         Spacer()
                         Text("FoodPassport Team").foregroundColor(.secondary)
+                    }
+                }
+                
+                // log out button section
+                Section {
+                    Button(role: .destructive) {
+                        // Securely sign out of Firebase and kick user to WelcomeView
+                        do {
+                            try Auth.auth().signOut()
+                            isLoggedIn = false
+                        } catch {
+                            print("Error signing out of Firebase: \(error.localizedDescription)")
+                        }
+                    } label: {
+                        Text("Log Out")
+                            .frame(maxWidth: .infinity, alignment: .center)
                     }
                 }
             }

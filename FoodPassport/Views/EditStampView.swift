@@ -12,29 +12,83 @@ struct EditStampView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.dismiss) private var dismiss
     
-    @ObservedObject var stamp: Stamp // Observes the live database object
+    @ObservedObject var stamp: Stamp
     
     @State private var rating: Double
+    @State private var useDetailedRatings: Bool = false
+    @State private var foodRating: Double = 3.0
+    @State private var serviceRating: Double = 3.0
+    @State private var valueRating: Double = 3.0
+    
     @State private var notes: String
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedPhotoData: Data?
     
-    // Initialize the state variables with the existing stamp data
+    // calculate average if detail rating is toggled on
+    private var calculatedOverallRating: Double {
+        if useDetailedRatings {
+            return (foodRating + serviceRating + valueRating) / 3.0
+        }
+        return rating
+    }
+    
+    // initialize the state variables with existing data directly from the database
     init(stamp: Stamp) {
         self.stamp = stamp
         _rating = State(initialValue: stamp.rating)
         _notes = State(initialValue: stamp.notes ?? "")
         _selectedPhotoData = State(initialValue: stamp.photoData)
+        
+        _useDetailedRatings = State(initialValue: stamp.hasDetailedRating)
+        _foodRating = State(initialValue: stamp.hasDetailedRating ? stamp.foodRating : stamp.rating)
+        _serviceRating = State(initialValue: stamp.hasDetailedRating ? stamp.serviceRating : stamp.rating)
+        _valueRating = State(initialValue: stamp.hasDetailedRating ? stamp.valueRating : stamp.rating)
     }
     
     var body: some View {
         Form {
+            Section(header: Text("Restaurant Info")) {
+                Text(stamp.restaurantName ?? "Unknown Restaurant")
+                    .font(.headline)
+                Text(stamp.address ?? "No Address Provided")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            
             Section(header: Text("Update Rating")) {
-                Slider(value: $rating, in: 1...5, step: 0.5)
-                HStack {
-                    Text("Rating: \(String(format: "%.1f", rating))")
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
+                Toggle("Use Detailed Rating", isOn: $useDetailedRatings)
+                    .tint(.orange)
+                
+                if useDetailedRatings {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Food: \(String(format: "%.1f", foodRating))")
+                        Slider(value: $foodRating, in: 1...5, step: 0.5)
+                        
+                        Text("Service: \(String(format: "%.1f", serviceRating))")
+                        Slider(value: $serviceRating, in: 1...5, step: 0.5)
+                        
+                        Text("Value: \(String(format: "%.1f", valueRating))")
+                        Slider(value: $valueRating, in: 1...5, step: 0.5)
+                        
+                        Divider()
+                        
+                        HStack {
+                            Text("New Overall Average:")
+                                .bold()
+                            Spacer()
+                            Text(String(format: "%.1f", calculatedOverallRating))
+                                .bold()
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.yellow)
+                        }
+                    }
+                } else {
+                    Slider(value: $rating, in: 1...5, step: 0.5)
+                    HStack {
+                        Text("Rating: \(String(format: "%.1f", rating))")
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                    }
                 }
             }
             
@@ -65,9 +119,16 @@ struct EditStampView: View {
             }
             
             Button("Save Changes") {
+                // use the calculated average for the final save
+                let finalRatingToSave = calculatedOverallRating
+                
                 PersistenceController.shared.updateStamp(
                     stamp: stamp,
-                    newRating: rating,
+                    newRating: finalRatingToSave,
+                    hasDetailedRating: useDetailedRatings,
+                    newFoodRating: foodRating,
+                    newServiceRating: serviceRating,
+                    newValueRating: valueRating,
                     newNotes: notes.isEmpty ? nil : notes,
                     newPhotoData: selectedPhotoData,
                     context: viewContext
@@ -76,6 +137,7 @@ struct EditStampView: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .buttonStyle(.borderedProminent)
+            .tint(.orange)
             .padding(.vertical)
         }
         .navigationTitle("Edit Stamp")

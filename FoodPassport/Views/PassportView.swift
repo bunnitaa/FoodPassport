@@ -7,8 +7,8 @@
 
 import SwiftUI
 import CoreData
+import FirebaseAuth
 
-// define the available sorting options
 enum SortOption: String, CaseIterable {
     case newest = "Most Recent"
     case oldest = "Oldest"
@@ -21,13 +21,12 @@ struct PassportView: View {
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Stamp.date, ascending: false)],
+        predicate: NSPredicate(format: "userId == %@", Auth.auth().currentUser?.uid ?? ""),
         animation: .default)
     private var stamps: FetchedResults<Stamp>
     
-    // state variable to track current selection
     @State private var selectedSort: SortOption = .newest
     
-    // computed property sorts the data based on the selection
     var sortedStamps: [Stamp] {
         switch selectedSort {
         case .newest:
@@ -48,45 +47,16 @@ struct PassportView: View {
                     Text("No stamps yet. Go search and add your first meal!")
                         .foregroundColor(.secondary)
                 } else {
-                    // update loop to use the dynamically sorted array
+                    // We pass the stamp to the new StampRow subview
                     ForEach(sortedStamps) { stamp in
                         NavigationLink(destination: StampDetailView(stamp: stamp)) {
-                            HStack(spacing: 12) {
-                                if let photoData = stamp.photoData, let uiImage = UIImage(data: photoData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 50, height: 50)
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                } else {
-                                    Color.gray.opacity(0.3)
-                                        .frame(width: 50, height: 50)
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .overlay(Image(systemName: "fork.knife").foregroundColor(.gray))
-                                }
-                                
-                                VStack(alignment: .leading) {
-                                    Text(stamp.restaurantName ?? "Unknown")
-                                        .font(.headline)
-                                    HStack(spacing: 2) {
-                                        Text("Rating: \(String(format: "%.1f", stamp.rating))")
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.yellow)
-                                    }
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            .padding(.vertical, 4)
+                            StampRow(stamp: stamp)
                         }
                     }
                     .onDelete(perform: deleteStamps)
                 }
             }
             .navigationTitle("My Passport")
-            // sort menu to the top right of the screen
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu {
@@ -105,14 +75,43 @@ struct PassportView: View {
     
     private func deleteStamps(offsets: IndexSet) {
         withAnimation {
-            // map the deletion against the sorted array, not the raw fetch request
             offsets.map { sortedStamps[$0] }.forEach(viewContext.delete)
+            try? viewContext.save()
+        }
+    }
+}
+
+// subview to observe individual stamp changes
+struct StampRow: View {
+    @ObservedObject var stamp: Stamp
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            if let photoData = stamp.photoData, let uiImage = UIImage(data: photoData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 50, height: 50)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            } else {
+                Color.gray.opacity(0.3)
+                    .frame(width: 50, height: 50)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(Image(systemName: "fork.knife").foregroundColor(.gray))
+            }
             
-            do {
-                try viewContext.save()
-            } catch {
-                print("Error deleting stamp: \(error)")
+            VStack(alignment: .leading) {
+                Text(stamp.restaurantName ?? "Unknown")
+                    .font(.headline)
+                HStack(spacing: 2) {
+                    Text("Rating: \(String(format: "%.1f", stamp.rating))")
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
+                }
+                .font(.subheadline)
+                .foregroundColor(.secondary)
             }
         }
+        .padding(.vertical, 4)
     }
 }

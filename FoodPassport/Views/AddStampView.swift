@@ -7,7 +7,6 @@
 
 import SwiftUI
 import PhotosUI
-import WidgetKit
 import CoreData
 
 struct AddStampView: View {
@@ -121,18 +120,15 @@ struct AddStampView: View {
                     latitude: restaurant.latitude,
                     longitude: restaurant.longitude,
                     rating: finalRatingToSave,
+                    hasDetailedRating: useDetailedRatings,
+                    foodRating: foodRating,
+                    serviceRating: serviceRating,
+                    valueRating: valueRating,
                     notes: notes.isEmpty ? nil : notes,
                     photoData: selectedPhotoData,
                     context: viewContext
                 )
                 
-                if let sharedDefaults = UserDefaults(suiteName: "group.FoodPassport") {
-                    sharedDefaults.set(restaurant.name, forKey: "lastMealName")
-                    sharedDefaults.set(restaurant.displayAddress, forKey: "lastMealAddress")
-                    sharedDefaults.set(finalRatingToSave, forKey: "lastMealRating")
-                    sharedDefaults.set(notes, forKey: "lastMealNotes")
-                    WidgetCenter.shared.reloadAllTimelines()
-                }
                 dismiss()
             }
             .frame(maxWidth: .infinity, alignment: .center)

@@ -7,17 +7,26 @@
 
 import SwiftUI
 import CoreData
+import FirebaseCore
 
 @main
 struct FoodPassportApp: App {
-    // Initialize the CoreData controller
     let persistenceController = PersistenceController.shared
+    @AppStorage("isLoggedIn") private var isLoggedIn = false
+
+    // boot up firebase when the app launches
+    init() {
+        FirebaseApp.configure()
+    }
 
     var body: some Scene {
         WindowGroup {
-            MainTabView()
-                // Inject the database context into the SwiftUI environment
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            if isLoggedIn {
+                MainTabView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            } else {
+                WelcomeView()
+            }
         }
     }
 }

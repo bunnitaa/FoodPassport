@@ -7,18 +7,20 @@
 
 import SwiftUI
 import CoreData
+import FirebaseAuth
 
 struct ProfileStatsView: View {
-    // fetch all stamps to calculate stats
+    // fetch stamps filtered by the current user ID
     @FetchRequest(
         entity: Stamp.entity(),
-        sortDescriptors: []
+        sortDescriptors: [],
+        predicate: NSPredicate(format: "userId == %@", Auth.auth().currentUser?.uid ?? "")
     ) private var savedStamps: FetchedResults<Stamp>
     
-    // dynamic calculations
-    private var totalStamps: Int {
-        savedStamps.count
-    }
+    @State private var displayName: String = "Explorer"
+    @State private var email: String = ""
+
+    private var totalStamps: Int { savedStamps.count }
     
     private var averageRating: Double {
         guard totalStamps > 0 else { return 0.0 }
@@ -38,11 +40,11 @@ struct ProfileStatsView: View {
                         .foregroundColor(.orange)
                         .padding(.top, 40)
                     
-                    Text("Bunnita")
+                    Text(displayName)
                         .font(.largeTitle)
                         .bold()
                     
-                    Text("Food Explorer")
+                    Text(email)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -57,11 +59,19 @@ struct ProfileStatsView: View {
                 Spacer()
             }
             .navigationTitle("Profile")
+            .onAppear {
+                // load actual user data from firebase on appear
+                if let user = Auth.auth().currentUser {
+                    self.displayName = user.displayName ?? "New User"
+                    self.email = user.email ?? ""
+                }
+            }
         }
     }
 }
 
-// UI component for the stat boxes
+// MARK: - UI Component for the Stat Boxes
+// This is the part that was missing!
 struct StatBox: View {
     let title: String
     let value: String

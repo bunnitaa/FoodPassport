@@ -8,13 +8,16 @@
 import SwiftUI
 import MapKit
 import CoreData
+import FirebaseAuth
 
 struct MapView: View {
     @ObservedObject var viewModel: SearchViewModel
     
+    // filter by current user
     @FetchRequest(
         entity: Stamp.entity(),
-        sortDescriptors: []
+        sortDescriptors: [],
+        predicate: NSPredicate(format: "userId == %@", Auth.auth().currentUser?.uid ?? "")
     ) private var savedStamps: FetchedResults<Stamp>
     
     @State private var selectedRestaurant: Restaurant?
