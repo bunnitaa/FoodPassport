@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
     // connects to the same variable in FoodPassportApp
@@ -13,6 +14,9 @@ struct LoginView: View {
     
     @State private var email = ""
     @State private var password = ""
+    
+    // variable to hold login errors
+    @State private var errorMessage = ""
     
     var body: some View {
         VStack(spacing: 20) {
@@ -25,13 +29,28 @@ struct LoginView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
+                .autocorrectionDisabled()
             
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
+            // display the error message if there is one
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .font(.caption)
+                    .multilineTextAlignment(.center)
+            }
+            
             Button(action: {
-                // routes the user to the MainTabView
-                isLoggedIn = true
+                // firebase authentication call
+                Auth.auth().signIn(withEmail: email, password: password) { result, error in
+                    if let error = error {
+                        errorMessage = error.localizedDescription
+                    } else {
+                        isLoggedIn = true
+                    }
+                }
             }) {
                 Text("Sign In")
                     .bold()
