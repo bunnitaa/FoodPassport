@@ -49,6 +49,7 @@ class GooglePlacesService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(apiKey, forHTTPHeaderField: "X-Goog-Api-Key")
+        request.setValue(Bundle.main.bundleIdentifier ?? "com.bunnita.FoodPassport", forHTTPHeaderField: "X-Ios-Bundle-Identifier")
         
         // tells Google exactly which pieces of data we want to download
         request.setValue("places.id,places.displayName.text,places.formattedAddress,places.location,places.rating,places.photos", forHTTPHeaderField: "X-Goog-FieldMask")

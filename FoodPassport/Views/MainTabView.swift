@@ -36,6 +36,12 @@ struct MainTabView: View {
                     Label("Passport", systemImage: "book.closed")
                 }
             
+            // wishlist tab
+            WishlistView()
+                            .tabItem {
+                                Label("Wishlist", systemImage: "bookmark.fill")
+                            }
+            
             // profile Tab
             ProfileStatsView()
                 .tabItem {

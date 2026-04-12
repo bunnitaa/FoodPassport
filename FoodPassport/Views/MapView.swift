@@ -67,6 +67,8 @@ struct MapView: View {
                             MapCalloutCard(
                                 restaurant: restaurant,
                                 isStamped: isRestaurantStamped(restaurant.id),
+                                // pass the wishlist status down to the card
+                                isWishlisted: isRestaurantWishlisted(restaurant.id),
                                 onStamp: { restaurantToSave = restaurant }
                             )
                             
@@ -79,7 +81,11 @@ struct MapView: View {
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(.white)
-                            .background(isRestaurantStamped(restaurant.id) ? Color.green : Color.orange)
+                            .background(
+                                isRestaurantStamped(restaurant.id) ? Color.green :
+                                isRestaurantWishlisted(restaurant.id) ? Color.blue :
+                                Color.orange
+                            )
                             .clipShape(Circle())
                             .shadow(radius: 3)
                             .onTapGesture {
@@ -111,10 +117,7 @@ struct MapView: View {
                 TextField("Search a city (e.g. Laval)...", text: $viewModel.searchLocation)
                     .submitLabel(.search)
                     .onSubmit {
-                        // move the camera
                         searchForLocation(query: viewModel.searchLocation)
-                        
-                        // fetch the google places data for new city
                         let term = viewModel.searchText.isEmpty ? "restaurants" : viewModel.searchText
                         viewModel.performSearch(term: term, location: viewModel.searchLocation)
                     }
@@ -159,8 +162,14 @@ struct MapView: View {
         }
     }
     
+    // check if it's stamped AND not a wishlist item
     private func isRestaurantStamped(_ id: String) -> Bool {
-        savedStamps.contains { $0.restaurantId == id }
+        savedStamps.contains { $0.restaurantId == id && !$0.isWishlist }
+    }
+    
+    // check if it's ONLY a wishlist item
+    private func isRestaurantWishlisted(_ id: String) -> Bool {
+        savedStamps.contains { $0.restaurantId == id && $0.isWishlist }
     }
     
     private func updateBounds() {
@@ -180,19 +189,17 @@ struct MapView: View {
 struct MapCalloutCard: View {
     let restaurant: Restaurant
     let isStamped: Bool
+    let isWishlisted: Bool
     let onStamp: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let imageUrl = restaurant.imageUrl, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                         .aspectRatio(contentMode: .fill)
-                         .frame(height: 100)
-                         .clipped()
-                } placeholder: {
-                    Rectangle().fill(Color.gray.opacity(0.2)).frame(height: 100)
-                }
+            // use secure image loader
+            if let imageUrlString = restaurant.imageUrl {
+                AsyncGoogleImageView(urlString: imageUrlString)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 100)
+                    .clipped()
             }
             
             VStack(alignment: .leading, spacing: 4) {
@@ -206,6 +213,7 @@ struct MapCalloutCard: View {
                     .foregroundColor(.gray)
                     .lineLimit(2)
                 
+                // dynamic status text
                 if isStamped {
                     HStack {
                         Image(systemName: "checkmark.seal.fill")
@@ -214,20 +222,48 @@ struct MapCalloutCard: View {
                     }
                     .foregroundColor(.green)
                     .padding(.top, 2)
+                } else if isWishlisted {
+                    HStack {
+                        Image(systemName: "bookmark.fill")
+                        Text("On To-Try List")
+                            .font(.caption).bold()
+                    }
+                    .foregroundColor(.blue)
+                    .padding(.top, 2)
                 }
             }
             .padding(.horizontal, 10)
             .padding(.bottom, 5)
             
-            Button(action: onStamp) {
-                Text(isStamped ? "Stamp Again" : "Stamp Passport")
-                    .font(.subheadline)
-                    .bold()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-                    .background(Color.orange)
-                    .cornerRadius(8)
+            HStack(spacing: 10) {
+                Button(action: onStamp) {
+                    Text(isStamped ? "Stamp Again" : "Stamp Passport")
+                        .font(.subheadline)
+                        .bold()
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                        .background(Color.orange)
+                        .cornerRadius(8)
+                }
+                
+                // only show the bookmark button if it's NOT already wishlisted and NOT already stamped
+                if !isWishlisted && !isStamped {
+                    Button(action: {
+                        PersistenceController.shared.saveToWishlist(
+                            restaurant: restaurant,
+                            context: PersistenceController.shared.container.viewContext
+                        )
+                    }) {
+                        Image(systemName: "bookmark")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 12)
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                    }
+                }
             }
             .padding(.horizontal, 10)
             .padding(.bottom, 10)

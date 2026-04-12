@@ -10,6 +10,13 @@ import SwiftUI
 struct SearchView: View {
     @ObservedObject var viewModel: SearchViewModel
     
+    // access core data from this view
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    // pptional state to show a quick confirmation toast/alert
+    @State private var showingWishlistAlert = false
+    @State private var justAddedRestaurantName = ""
+    
     var body: some View {
         NavigationStack {
             List {
@@ -39,6 +46,15 @@ struct SearchView: View {
                             NavigationLink(destination: AddStampView(restaurant: restaurant)) {
                                 RestaurantRowView(restaurant: restaurant)
                             }
+                            // swipe actions added here!
+                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                Button {
+                                    addToWishlist(restaurant: restaurant)
+                                } label: {
+                                    Label("To-Try", systemImage: "bookmark.fill")
+                                }
+                                .tint(.blue)
+                            }
                         }
                     }
                 }
@@ -48,6 +64,12 @@ struct SearchView: View {
             .searchable(text: $viewModel.searchText, prompt: "Find tacos, burgers, etc.")
             .onSubmit(of: .search) {
                 triggerSearch()
+            }
+            // alert to let the user know the swipe worked
+            .alert("Added to Wishlist!", isPresented: $showingWishlistAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("\(justAddedRestaurantName) is now on your To-Try list.")
             }
         }
     }
@@ -59,5 +81,12 @@ struct SearchView: View {
         let term = viewModel.searchText.isEmpty ? "restaurants" : viewModel.searchText
         
         viewModel.performSearch(term: term, location: viewModel.searchLocation)
+    }
+    
+    // helper function to trigger the save
+    private func addToWishlist(restaurant: Restaurant) {
+        PersistenceController.shared.saveToWishlist(restaurant: restaurant, context: viewContext)
+        justAddedRestaurantName = restaurant.name
+        showingWishlistAlert = true
     }
 }

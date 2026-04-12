@@ -110,9 +110,16 @@ struct PassportView: View {
     
     private func deleteStamps(offsets: IndexSet) {
         withAnimation {
-            // delte from the filtered array to avoid index out-of-bounds crashes
+            // delete from the filtered array to avoid index out-of-bounds crashes
             offsets.map { filteredAndSortedStamps[$0] }.forEach(viewContext.delete)
-            try? viewContext.save()
+            
+            do {
+                try viewContext.save()
+                // tell widget to find the next most recent stamp
+                PersistenceController.shared.refreshWidgetData(context: viewContext)
+            } catch {
+                print("Error deleting stamp: \(error)")
+            }
         }
     }
 }
