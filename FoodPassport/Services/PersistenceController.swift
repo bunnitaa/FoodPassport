@@ -66,7 +66,7 @@ struct PersistenceController {
             do {
                 try context.save()
                 
-                // NEW: Tell the widget to sync
+                // tell the widget to sync
                 refreshWidgetData(context: context)
                 
                 print("Successfully saved stamp for \(name)!")
@@ -89,7 +89,7 @@ struct PersistenceController {
         do {
             try context.save()
             
-            // NEW: Tell the widget to sync
+            // tell the widget to sync
             refreshWidgetData(context: context)
             
             print("Successfully updated stamp for \(stamp.restaurantName ?? "Unknown")!")
